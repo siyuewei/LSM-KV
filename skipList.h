@@ -108,6 +108,7 @@ int SkipList<K,V>::insert(K key, V value) {
     // if current node have key equal to searched key, change it
     if (current != NULL && current->getKey() == key) {
         current->setValue(value);
+        //TODO: update memory size
         return 1;
     }
 
@@ -129,7 +130,7 @@ int SkipList<K,V>::insert(K key, V value) {
         }
 
         //update memory size
-        memorySize += 8 + 4 + sizeof(value);
+        memorySize += 12 + value.size();
 
         itemNum++;
     }
@@ -179,6 +180,10 @@ V SkipList<K,V>::serach(K key)
     current = current->next[0];
 
     if(current && current->getKey() == key){
+//        if(key == 47464){
+//            std::cout << "find key: " << key << " value: " << current->getValue() << std::endl;
+//            std::cout << "value size" << current->getValue().size() << std::endl;
+//        }
         return current->getValue();
     }
 

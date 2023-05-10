@@ -6,7 +6,8 @@
 #include "sstable.h"
 #include "diskstorage.h"
 
-#define MEMTABLE_MAXSIZE (2*1024*1024)
+//TODO: remember to change the size to 2MB(2*1024*1024)
+#define MEMTABLE_MAXSIZE (1024*30)
 
 using namespace std;
 
@@ -17,7 +18,7 @@ private:
     SkipList<uint64_t,std::string>* mem_table;
     uint64_t time_stamp;
     uint64_t tag;
-    const string dir;
+    string dir;
 
     /*DISK*/
     //ensure the every level of sstables can sort by <time_stamp,min_key> auto

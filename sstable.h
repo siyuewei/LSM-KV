@@ -33,15 +33,10 @@ private:
     uint64_t pair_num;
     uint64_t min_key, max_key;
 
-
-//    vector<string> data_area;
-
 public:
     BloomFilter *bloomFilter;
     vector<index_item> index_area;
     SStable(uint64_t t_stamp, uint64_t p_num, uint64_t min_k, uint64_t max_k);
-//    void set_index_area(uint64_t key, uint32_t value);
-//    void set_data_area(string data);
 
     //basic function
     string search(uint64_t key, const string& dir_path);

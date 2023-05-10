@@ -4,6 +4,7 @@
 
 #include "bloomfilter.h"
 BloomFilter::BloomFilter() {
+    bitmap = new std::bitset<BLOOMFILTER_SIZE>;
     bitmap->reset();
 }
 

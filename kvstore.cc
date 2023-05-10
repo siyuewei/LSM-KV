@@ -3,9 +3,13 @@
 
 KVStore::KVStore(const std::string &dir): KVStoreAPI(dir)
 {
+    this->dir = dir;
     mem_table = new SkipList<uint64_t,string>();
     sstables = {{0,{}}};
+    time_stamp = 1;
+    tag = 1;
     //TODO:在启动时，需检查现有的数据目录中各层 SSTable 文件，并在内存中构建相应的缓存
+
 }
 
 KVStore::~KVStore()
@@ -20,8 +24,10 @@ KVStore::~KVStore()
 void KVStore::put(uint64_t key, const std::string &s)
 {
     //FINISH : check if the sstable size will larger than 2MB
-    if(mem_table->getMemSize() + 12 + sizeof(s) <= MEMTABLE_MAXSIZE){
+    //TODO: check if the put is a update
+    if(mem_table->getMemSize() + 12 + s.size() <= MEMTABLE_MAXSIZE){
         mem_table->insert(key, s);
+        return;
     }
 
     //size > 2MB, create sstable
@@ -31,7 +37,10 @@ void KVStore::put(uint64_t key, const std::string &s)
     mem_table->clear();
 
     sstables[0].insert({{time_stamp,tag},sstable_new});
+    ++time_stamp;
+    ++tag;
 
+    mem_table->insert(key,s);//Don't forget to insert the new key-value pair
 //    compaction();
 }
 /**
@@ -41,13 +50,18 @@ void KVStore::put(uint64_t key, const std::string &s)
 std::string KVStore::get(uint64_t key)
 {
     string value = mem_table->serach(key);
+    if(value == "~DELETED~") return "";
     if(value != "") return value;
 
+    //TODO:handle the "~DELETED~" in sstable
     for(auto &sstable_level_time_tag : sstables){
         for(auto &sstable_time_tag: sstable_level_time_tag.second){
             SStable* sstable_cur = sstable_time_tag.second;
-            const string file_path = dir + "level-" + to_string(sstable_level_time_tag.first) + "/" + to_string(sstable_time_tag.first.first) + "_" + to_string(sstable_time_tag.first.second);
-            if(!(value = sstable_cur->search(key,file_path)).empty()) return value;
+            const string file_path = dir + "/level-" + to_string(sstable_level_time_tag.first) + "/" + to_string(sstable_time_tag.first.first) + "_" + to_string(sstable_time_tag.first.second) + ".ssh";
+            if(!(value = sstable_cur->search(key,file_path)).empty()){
+                cout << "the value size return form KVStore::get is " << value.size() << endl; //TODO:delete this line
+                return value;
+            }
         }
     }
 	return "";
@@ -58,10 +72,11 @@ std::string KVStore::get(uint64_t key)
  */
 bool KVStore::del(uint64_t key)
 {
-    if(get(key).empty()) return false;
+    string value = get(key);
+    if(value.empty()) return false;
 
-    mem_table->insert(key,"“~DELETED~");
-	return false;
+    mem_table->insert(key,"~DELETED~");
+	return true;
 }
 
 /**
