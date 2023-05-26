@@ -9,7 +9,7 @@
 #include "MurmurHash3.h"
 
 
-#define BLOOMFILTER_SIZE 10240*8
+#define BLOOMFILTER_SIZE (10240*8)
 
 class BloomFilter {
 private:

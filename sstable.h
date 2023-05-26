@@ -43,7 +43,11 @@ public:
 
     //DiskStorage
     static SStable* memtable_to_sstable(const string& file_path, SkipList<uint64_t,std::string>*mem_table, uint64_t time_stamp, uint64_t tag);
+    static SStable* read_sstable_from_disk(const string& file_path);
 
+    uint64_t get_pair_num(){return pair_num;}
+    uint64_t get_max_key(){return max_key;}
+    uint64_t get_min_key(){return min_key;}
 };
 
 

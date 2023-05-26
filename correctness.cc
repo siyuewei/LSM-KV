@@ -10,8 +10,8 @@ class CorrectnessTest : public Test {
 private:
 	const uint64_t SIMPLE_TEST_MAX = 512;
     //TODO:remember to change the LARGE_TEST_MAX to 1024 * 64
-//	const uint64_t LARGE_TEST_MAX = 1024 * 64;
-    const uint64_t LARGE_TEST_MAX = 200;
+	const uint64_t LARGE_TEST_MAX = 1024 * 64;
+//    const uint64_t LARGE_TEST_MAX = 200;
 
 	void regular_test(uint64_t max)
 	{
@@ -31,13 +31,14 @@ private:
 		for (i = 0; i < max; ++i) {
 			store.put(i, std::string(i+1, 's'));
 			EXPECT(std::string(i+1, 's'), store.get(i));
+//            cout << "i: " << i <<endl;
 		}
 		phase();
 
 		// Test after all insertions
 		for (i = 0; i < max; ++i){
-            cout << "-----------------------------------------" << endl;
-            cout << "now try to get value of key = " << i << endl;
+//            cout << "-----------------------------------------" << endl;
+//            cout << "now try to get value of key = " << i << endl;
             EXPECT(std::string(i+1, 's'), store.get(i));
         }
 		phase();
@@ -96,10 +97,10 @@ public:
 	{
 		std::cout << "KVStore Correctness Test" << std::endl;
 
-//		store.reset();
-//
-//		std::cout << "[Simple Test]" << std::endl;
-//		regular_test(SIMPLE_TEST_MAX);
+		store.reset();
+
+		std::cout << "[Simple Test]" << std::endl;
+		regular_test(SIMPLE_TEST_MAX);
 		
 		store.reset();
 
@@ -121,6 +122,7 @@ int main(int argc, char *argv[])
 	CorrectnessTest test("./data", verbose);
 
 	test.start_test();
+//KVStore store("./data");
 
 //    SkipList<uint64_t ,string> skipList(16);
 //    skipList.insert(1,"12");

@@ -49,8 +49,8 @@ cmake_ninja_workdir = E$:/LSM-KV/LSM-KV/cmake-build-debug/
 
 build cmake_object_order_depends_target_LSM_KV: phony || CMakeFiles/LSM_KV.dir
 
-build CMakeFiles/LSM_KV.dir/correctness.cc.obj: CXX_COMPILER__LSM_KV_Debug E$:/LSM-KV/LSM-KV/correctness.cc || cmake_object_order_depends_target_LSM_KV
-  DEP_FILE = CMakeFiles\LSM_KV.dir\correctness.cc.obj.d
+build CMakeFiles/LSM_KV.dir/persistence.cc.obj: CXX_COMPILER__LSM_KV_Debug E$:/LSM-KV/LSM-KV/persistence.cc || cmake_object_order_depends_target_LSM_KV
+  DEP_FILE = CMakeFiles\LSM_KV.dir\persistence.cc.obj.d
   FLAGS = -g -std=gnu++14
   OBJECT_DIR = CMakeFiles\LSM_KV.dir
   OBJECT_FILE_DIR = CMakeFiles\LSM_KV.dir
@@ -87,7 +87,7 @@ build CMakeFiles/LSM_KV.dir/diskstorage.cpp.obj: CXX_COMPILER__LSM_KV_Debug E$:/
 #############################################
 # Link the executable LSM_KV.exe
 
-build LSM_KV.exe: CXX_EXECUTABLE_LINKER__LSM_KV_Debug CMakeFiles/LSM_KV.dir/correctness.cc.obj CMakeFiles/LSM_KV.dir/kvstore.cc.obj CMakeFiles/LSM_KV.dir/bloomfilter.cpp.obj CMakeFiles/LSM_KV.dir/sstable.cpp.obj CMakeFiles/LSM_KV.dir/diskstorage.cpp.obj
+build LSM_KV.exe: CXX_EXECUTABLE_LINKER__LSM_KV_Debug CMakeFiles/LSM_KV.dir/persistence.cc.obj CMakeFiles/LSM_KV.dir/kvstore.cc.obj CMakeFiles/LSM_KV.dir/bloomfilter.cpp.obj CMakeFiles/LSM_KV.dir/sstable.cpp.obj CMakeFiles/LSM_KV.dir/diskstorage.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\LSM_KV.dir

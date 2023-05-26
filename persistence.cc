@@ -8,6 +8,7 @@
 class PersistenceTest : public Test {
 private:
 	const uint64_t TEST_MAX = 1024 * 32;
+//	const uint64_t TEST_MAX = 800;
 	void prepare(uint64_t max)
 	{
 		uint64_t i;
@@ -33,6 +34,7 @@ private:
 
 		// Prepare data for Test Mode
 		for (i = 0; i < max; ++i) {
+            cout << i << " ";
 			switch (i & 3) {
 			case 0:
 				EXPECT(not_found, store.get(i));
