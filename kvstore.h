@@ -8,6 +8,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -41,13 +42,15 @@ private:
 
     void read_config();
 
-    void read_data(const string& file_path,map<uint64_t,pair<string,uint64_t>> *data,bool isLast);
+    void read_data(const string& file_path,map<uint64_t,pair<string,pair<uint64_t,uint64_t>>> *data,bool isLast);
     void delete_sstables_file(const string& file_path);
     uint64_t get_time_stamp(const string& file_path);
+    uint64_t get_min_key(const string& file_path);
+    void select_file(vector<string> file_list, vector<string> &file_select_list, uint64_t num);
+    bool compareFilePaths(const std::string& filePath1, const std::string& filePath2);
+
 
 public:
-
-
 	KVStore(const std::string &dir);
 
 	~KVStore();
@@ -63,4 +66,8 @@ public:
 	void scan(uint64_t key1, uint64_t key2, std::list<std::pair<uint64_t, std::string> > &list) override;
 
     void compaction(uint64_t level);
+
+    std::string get_without_sstables(uint64_t key);
+
+    std::string get_without_bloom(uint64_t key);
 };

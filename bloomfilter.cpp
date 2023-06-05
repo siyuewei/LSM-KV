@@ -37,3 +37,4 @@ std::bitset<BLOOMFILTER_SIZE> *BloomFilter::getBitMapBuf() {
 
     return bitmap;
 }
+

@@ -22,6 +22,13 @@ public:
     void insert(const uint64_t key);
     bool find(const uint64_t key);
     std::bitset<BLOOMFILTER_SIZE> *getBitMapBuf();
+    void loadBloomFilter(char* buf){
+        memcpy((char*)bitmap, buf, BLOOMFILTER_SIZE/8);
+    }
+
+    void saveBloomFilter(char *buf) {
+        memcpy(buf, (char*)bitmap, BLOOMFILTER_SIZE/8);
+    }
 };
 
 

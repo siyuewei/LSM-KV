@@ -39,7 +39,8 @@ public:
     SStable(uint64_t t_stamp, uint64_t p_num, uint64_t min_k, uint64_t max_k);
 
     //basic function
-    string search(uint64_t key, const string& dir_path);
+    string search(uint64_t key, const string&file_path);
+    string serach_without_bloom(uint64_t key, const string&file_path);
 
     //DiskStorage
     static SStable* memtable_to_sstable(const string& file_path, SkipList<uint64_t,std::string>*mem_table, uint64_t time_stamp, uint64_t tag);

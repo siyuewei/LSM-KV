@@ -8,7 +8,7 @@
 class PersistenceTest : public Test {
 private:
 	const uint64_t TEST_MAX = 1024 * 32;
-//	const uint64_t TEST_MAX = 800;
+//	const uint64_t TEST_MAX = 200;
 	void prepare(uint64_t max)
 	{
 		uint64_t i;
@@ -39,16 +39,20 @@ private:
 			case 0:
 				EXPECT(not_found, store.get(i));
 				store.put(i, std::string(i+1, 't'));
+                    EXPECT(std::string(i+1, 't'), store.get(i));
 				break;
 			case 1:
 				EXPECT(std::string(i+1, 's'), store.get(i));
 				store.put(i, std::string(i+1, 't'));
+                    EXPECT(std::string(i+1, 't'), store.get(i));
 				break;
 			case 2:
 				EXPECT(not_found, store.get(i));
+                    EXPECT(not_found, store.get(i));
 				break;
 			case 3:
 				EXPECT(std::string(i+1, 's'), store.get(i));
+                    EXPECT(std::string(i+1, 's'), store.get(i));
 				break;
 			default:
 				assert(0);
@@ -56,6 +60,26 @@ private:
 		}
 
 		phase();
+
+        for (i = 0; i < max; ++i) {
+            switch (i & 3) {
+                case 0:
+                    EXPECT(std::string(i+1, 't'), store.get(i));
+                    break;
+                case 1:
+                    EXPECT(std::string(i+1, 't'), store.get(i));
+                    break;
+                case 2:
+                    EXPECT(not_found, store.get(i));
+                    break;
+                case 3:
+                    EXPECT(std::string(i+1, 's'), store.get(i));
+                    break;
+                default:
+                    assert(0);
+            }
+        }
+        phase();
 
 		report();
 
@@ -69,26 +93,45 @@ private:
 			" terminate this program!" << std::endl;
 		std::cout.flush();
 
-		while (true) {
-			volatile int dummy;
+//		while (true) {
+//			volatile int dummy;
 			for (i = 0; i <= 1024; ++i) {
 				// The loop slows down the program
-				for (i = 0; i <= 1000; ++i)
-					dummy = i;
+//				for (i = 0; i <= 1000; ++i)
+//					dummy = i;
 
 				store.del(max + i);
 
-				for (i = 0; i <= 1000; ++i)
-					dummy = i;
+//				for (i = 0; i <= 1000; ++i)
+//					dummy = i;
 
 				store.put(max + i, std::string(1024, '.'));
 
-				for (i = 0; i <= 1000; ++i)
-					dummy = i;
+//				for (i = 0; i <= 1000; ++i)
+//					dummy = i;
 
 				store.put(max + i, std::string(512, 'x'));
 			}
-		}
+//		}
+        for (i = 0; i < max; ++i) {
+            switch (i & 3) {
+                case 0:
+                    EXPECT(std::string(i+1, 't'), store.get(i));
+                    break;
+                case 1:
+                    EXPECT(std::string(i+1, 't'), store.get(i));
+                    break;
+                case 2:
+                    EXPECT(not_found, store.get(i));
+                    break;
+                case 3:
+                    EXPECT(std::string(i+1, 's'), store.get(i));
+                    break;
+                default:
+                    assert(0);
+            }
+        }
+        phase();
 	}
 
 	void test(uint64_t max)
